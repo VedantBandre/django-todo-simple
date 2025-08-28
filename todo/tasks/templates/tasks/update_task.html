@@ -1,8 +1,35 @@
-<h3>Update Task</h3>
+{% extends 'tasks/base.html' %}
 
-<form method="POST" action="">
+{% block heading %}
+  ✏️ Update Task
+{% endblock %}
+
+{% block content %}
+  <form method="POST" action="" class="flex flex-col gap-4 items-center">
     {% csrf_token %}
-    
-    {{ form }}
-    <input type="submit" name="Update Task">
-</form>
+
+    <!-- Input styled like in list.html -->
+    <input type="text" name="title" id="id_title" value="{{ form.title.value|default:'' }}"
+           placeholder="Update your task..."
+           class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400" />
+
+    <!-- Completed checkbox -->
+    <div class="flex items-center gap-2">
+      {{ form.completed }}
+      <label for="id_completed" class="text-gray-700 dark:text-gray-200">Mark as completed</label>
+    </div>
+
+    <!-- Buttons row -->
+    <div class="flex justify-center gap-4">
+      <a href="{% url 'list' %}" 
+         class="bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-white px-4 py-2 rounded-md hover:bg-gray-400 dark:hover:bg-gray-500 transition">
+        Cancel
+      </a>
+
+      <button type="submit" 
+              class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-md transition">
+        ✅ Update
+      </button>
+    </div>
+  </form>
+{% endblock %}

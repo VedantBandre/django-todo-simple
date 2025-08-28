@@ -1,28 +1,37 @@
-<!DOCTYPE html>
-<head>
-<title>
-    To-Do App
-</title>
-</head>
-<body>
-    <h3>To-Do List</h3>
+{% extends 'tasks/base.html' %}
 
-    <form method="POST" actions="/">
-        {% csrf_token %}
-        {{ form.title }}
-        <input type="submit" name="Create Task">
-    </form>
+{% block content %}
+  <form method="POST" action="/" class="flex gap-2 mb-6 items-center justify-between">
+    {% csrf_token %}
+    <input type="text" name="title" id="id_title" placeholder="Enter a task..."
+           class="flex-1 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400" />
+    <div class="flex gap-2">
+      <button type="submit" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-md transition">
+        ➕ Add Task
+      </button>
+      <button type="button" id="theme-toggle" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white px-3 py-2 rounded-md transition">
+        🌓 Toggle Theme
+      </button>
+    </div>
+  </form>
 
+  <div class="space-y-4">
     {% for task in tasks %}
+      <div class="flex items-center justify-between bg-gray-50 dark:bg-gray-700 px-4 py-3 rounded-md shadow-sm transition">
         <div>
-            <a href="{% url 'update_task' task.id %}">Update</a>
-            <a href="{% url 'delete_task' task.id %}">Delete</a>
-            
-            {% if task.complete == True %}
-            <strike>{{ task }}</strike>
-            {% else %}
-            <span>{{ task }}</span>
-            {% endif %}
+          {% if task.complete %}
+            <span class="line-through text-gray-400 dark:text-gray-500">{{ task }}</span>
+          {% else %}
+            <span class="text-gray-800 dark:text-white">{{ task }}</span>
+          {% endif %}
         </div>
+        <div class="flex gap-2">
+          <a href="{% url 'update_task' task.id %}" class="text-sm text-emerald-600 dark:text-emerald-400 hover:underline">Edit</a>
+          <a href="{% url 'delete_task' task.id %}" class="text-sm text-red-500 dark:text-red-400 hover:underline">Delete</a>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-center text-gray-400 dark:text-gray-500">🎉 No tasks yet. Add one above!</p>
     {% endfor %}
-</body>
+  </div>
+{% endblock %}
