@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}To-Do App{% endblock %}</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+</head>
+
+<body class="bg-green-50 dark:bg-gray-900 min-h-screen flex items-center justify-center p-6 transition duration-300">
+  <div class="w-full max-w-xl bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8">
+
+    <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-6 text-center">
+      {% block heading %}📝 To-Do List{% endblock %}
+    </h1>
+
+    {% block content %}{% endblock %}
+    
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const toggle = document.getElementById('theme-toggle');
+      toggle?.addEventListener('click', () => {
+        const html = document.documentElement;
+        const isDark = html.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
+    });
+  </script>
+</body>
+</html>
